@@ -30,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     }
     ,
     animalMissionCount: DataTypes.INTEGER,
+    lastMissionClear : DataTypes.DATE,
+    animalStatus : DataTypes.INTEGER,
     animalProgress: DataTypes.FLOAT
   }, {
     sequelize,

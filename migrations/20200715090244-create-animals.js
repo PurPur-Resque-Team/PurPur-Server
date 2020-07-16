@@ -17,6 +17,12 @@ module.exports = {
       animalProgress: {
         type: Sequelize.FLOAT
       },
+      lastMissionClear : {
+        type : Sequelize.DATE
+      },
+      animalStatus : {
+        type : Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

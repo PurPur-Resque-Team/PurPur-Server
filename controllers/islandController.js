@@ -5,8 +5,40 @@ const jwt = require('../module/jwt');
 const models = require('../models');
 
 module.exports = {
-    getIslands : async (req, res)=> {
-        
-    }
-    
+    getIslands: async (req, res) => {
+
+        let { islandIdx } = req.query;
+        if (islandIdx == undefined) {
+            let userIdx = req.decoded.idx;
+            let getIslands = (await models.islands.findAll({
+                attributes: [
+                    "islandIdx", "islandName", "islandProgress", "isOpened"
+                ],
+                include: {
+                    model: models.users,
+                    where: { userIdx },
+                    through : {attributes : []}
+                }
+            }))
+            let islands = getIslands.map((curr) => {
+                delete curr.dataValues["users"];
+                return curr.dataValues
+            });
+            res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.GET_ISLANDS_LIST_SUCCESS, islands));
+            return;
+        }
+        console.log(islandIdx)
+        let islandInfo = (await models.islands.findOne({
+            where: { islandIdx },
+            attributes: [
+                "islandIdx", "islandName", "islandProgress", "isOpened"
+            ],
+            include: {
+                model: models.animals,
+                through : {attributes : []}
+            }
+        }));
+        res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.GET_ISLAND_SUCCESS, islandInfo));
+    },
+
 }

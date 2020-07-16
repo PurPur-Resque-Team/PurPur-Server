@@ -30,7 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     islandName: DataTypes.STRING,
-    islandProgress: DataTypes.FLOAT
+    islandProgress: DataTypes.FLOAT,
+    islandStatus : DataTypes.INTEGER,
+    isOpened : DataTypes.TINYINT
   }, {
     sequelize,
     modelName: 'islands',

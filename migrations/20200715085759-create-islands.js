@@ -11,8 +11,15 @@ module.exports = {
       islandName: {
         type: Sequelize.STRING
       },
+      
       islandProgress: {
         type: Sequelize.FLOAT
+      },
+      islandStatus : {
+        type : Sequelize.INTEGER
+      },
+      isOpened : {
+        type : Sequelize.TINYINT
       },
       createdAt: {
         allowNull: false,
