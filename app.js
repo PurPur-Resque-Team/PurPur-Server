@@ -10,8 +10,9 @@ var app = express();
 const models = require("./models/index.js");
 const schedule = require("node-schedule");
 const sequelize = require('sequelize')
+const {Op} = sequelize;
 const moment = require('moment-timezone');
-moment.tz.setDefault("Asia/Seoul"); 
+moment.tz.setDefault("Asia/Seoul");
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -47,19 +48,23 @@ models.sequelize.sync().then(() => {
 });
 
 const resetMissionClearAndCheckLastClear = schedule.scheduleJob("0 0 0 1/1 * ? *", async function () {
+  let expireDate = moment().subtract(3, 'days').add(9, "hours").toDate();
   await models.missions.update({
     isCleared: 0
   })
 
   console.log('========MISSION RESET COMPLETE!===================');
-  await models.animals.update({
-    animalStatus : 0,
-    animalProgress : 0
+  console.log();
+  let update = await models.animals.update({
+    animalStatus: 0,
+    animalProgress: 0
   }, {
-    where: sequelize.where(sequelize.fn('datediff', sequelize.fn("NOW"), sequelize.col('create_date')), {
-      $gt: 3
+    where: {
+      lastMissionClear: {
+        [Op.lte]: expireDate
+      }
     }
-    )
   })
+  console.log(update)
 })
 module.exports = app;

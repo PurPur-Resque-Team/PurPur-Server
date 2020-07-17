@@ -5,6 +5,5 @@ const animalController = require('../controllers/animalController');
 
 router.get('/', animalController.getAnimalInfo);
 router.post('/', animalController.clearMission);
-router.get('/test', animalController.resetAnimalTest)
 
 module.exports = router;

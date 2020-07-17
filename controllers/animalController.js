@@ -4,6 +4,7 @@ const statCode = require('../module/statusCode');
 const jwt = require('../module/jwt');
 const models = require('../models');
 const Sequelize = require('sequelize');
+
 const moment = require('moment-timezone');
 
 
@@ -62,26 +63,5 @@ module.exports = {
             res.status(statCode.FAIL).send(resUtil.successFalse(statCode.FAIL, resMsg.CLEAR_MISSION_FAIL + ", " + e));
             return;
         }
-    },
-    resetAnimalTest: async (req, res) => {
-        let update = await models.animals.update({
-            animalStatus: 0,
-            animalProgress: 0
-        }, {
-            where: {
-                lastMissionClear : {
-                    $lte : moment().subtract(3, 'days')
-                }
-            }
-        })
-        let get = await models.animals.findAll({
-            where: {
-                lastMissionClear : {
-                    $lte : moment().subtract(3, 'days').toDate()
-                }
-            }
-        })
-        console.log(update)
-        console.log(get)
     }
 }

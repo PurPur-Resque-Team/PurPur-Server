@@ -19,4 +19,6 @@ module.exports = {
     GET_ANIMAL_INFO_FAIL : "동물 정보 가져오기 실패",
     CLEAR_MISSION_SUCCESS : "미션 클리어 성공",
     CLEAR_MISSION_FAIL : "미션 클리어 실패",
+    EXPIRED_TOKEN : "만료된 토큰입니다",
+    EMPTY_TOKEN : "토큰이 입력되지 않았습니다"
 }
