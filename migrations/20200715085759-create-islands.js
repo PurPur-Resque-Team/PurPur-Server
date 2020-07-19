@@ -15,9 +15,13 @@ module.exports = {
       islandProgress: {
         type: Sequelize.FLOAT
       },
+      isLastProgressEven : {
+        type :Sequelize.TINYINT
+      },
       islandStatus : {
         type : Sequelize.INTEGER
       },
+      
       isOpened : {
         type : Sequelize.TINYINT
       },

@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     islandName: DataTypes.STRING,
     islandProgress: DataTypes.FLOAT,
+    isLastProgressEven : DataTypes.TINYINT,
     islandStatus : DataTypes.INTEGER,
     isOpened : DataTypes.TINYINT
   }, {

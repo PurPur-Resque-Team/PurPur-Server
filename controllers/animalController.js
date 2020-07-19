@@ -58,20 +58,29 @@ module.exports = {
             let updateMissionStatus = await models.missions.update({
                 isCleared: 1
             }, { where: { missionIdx } })
-            let afterAnimalInfo = await models.animals.findOne({
+            let animalInfo = await models.animals.findOne({
                 attributes: ["animalName","animalStatus", "animalProgress"],
                 where : {animalIdx}
             })
-            let afterIslandInfo = await models.islands.findOne({
-                attributes : ["islandName","islandProgress"],
+            let islandInfo = await models.islands.findOne({
+                attributes : ["islandName","islandProgress", "isLastProgressEven"],
                 where : {islandIdx}
             })
-            let {islandProgress} = afterIslandInfo.dataValues;
-            let {animalStatus} = afterAnimalInfo.dataValues;
-            if(animalStatus < 3) {
-                let updateIslandProgress = await models.islands.update({
-                    islandProgress: Sequelize.literal('islandProgress + 5.6')
-                }, {where : {islandIdx}})
+            let {islandProgress, isLastProgressEven} = islandInfo.dataValues;
+            let {animalStatus} = animalInfo.dataValues;
+            if(animalStatus <= 3) {
+                if(isLastProgressEven == 0) {
+                    await models.islands.update({
+                        islandProgress: Sequelize.literal('islandProgress + 6'),
+                        isLastProgressEven : 1
+                    }, {where : {islandIdx}})
+                }
+                else {
+                    await models.islands.update({
+                        islandProgress: Sequelize.literal('islandProgress + 5'),
+                        isLastProgressEven : 0
+                    }, {where : {islandIdx}})
+                }
                 if(islandProgress == 33.6) {
                     await models.islands.update({
                         islandStatus: Sequelize.literal('islandStatus + 1')
@@ -83,6 +92,14 @@ module.exports = {
                     }, {where : {islandIdx}})
                 }
             }
+            let afterAnimalInfo = await models.animals.findOne({
+                attributes: ["animalName","animalStatus", "animalProgress"],
+                where : {animalIdx}
+            })
+            let afterIslandInfo = await models.islands.findOne({
+                attributes : ["islandName","islandProgress"],
+                where : {islandIdx}
+            })
             res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.CLEAR_MISSION_SUCCESS, {
                 clearedMissionIdx: missionIdx,
                 afterAnimalInfo,
