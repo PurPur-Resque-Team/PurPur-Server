@@ -53,6 +53,7 @@
 - 실행에 필요한 의존성을 설치합니다.
 
 ```bash
+  cd project-directory
   npm install
 ```
 
@@ -90,6 +91,7 @@ app.set('port', port);
 - 실행에 필요한 의존성을 설치합니다.
 
 ```
+ >  cd project-directory
  >  npm install
 ```
 
