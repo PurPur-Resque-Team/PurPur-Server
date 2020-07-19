@@ -1,7 +1,7 @@
 # PurPur-Server
 
 
-![icon.png](https://user-images.githubusercontent.com/44252639/87869823-c0ee0080-c9dd-11ea-83b5-9c515b6f90db.png)
+<img src="https://user-images.githubusercontent.com/44252639/87869823-c0ee0080-c9dd-11ea-83b5-9c515b6f90db.png" alt="icon.png" style="zoom:55%;" />
 
 
 * 환경을 위한 실천이 바로 보이는 환경 교육 어플리케이션 '푸르푸르'의 Server README 입니다.
