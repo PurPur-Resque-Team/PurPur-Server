@@ -7,11 +7,11 @@
 * 환경을 위한 실천이 바로 보이는 환경 교육 어플리케이션 '푸르푸르'의 Server README 입니다.
 * AngelHack Seoul 2020 Online 참가팀 '새싹비빔밥'의 프로젝트입니다.
 * 프로젝트 기간 : 2020/07/13~2020/07/19
-* **[API]**(https://simju9397.gitbook.io/purpur)
+* ![API Document](https://simju9397.gitbook.io/purpur)
 
 ## Architecture
 
-![arcithecture](https://user-images.githubusercontent.com/44252639/87870374-6014f700-c9e2-11ea-95f5-c25e701983b2.png)
+![architecture ](https://user-images.githubusercontent.com/44252639/87870374-6014f700-c9e2-11ea-95f5-c25e701983b2.png)
 
 
 
@@ -21,7 +21,7 @@
 
 ## 의존성
 
-```
+```json
 "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
