@@ -1,4 +1,4 @@
-## 푸르푸르 구조대 - 환경을 위한 실천이 바로 보이는 환경 교육 어플리케이션
+## :evergreen_tree: 푸르푸르 구조대 - 환경을 위한 실천이 바로 보이는 환경 교육 어플리케이션 :evergreen_tree: ​
 
 
 <img src="https://user-images.githubusercontent.com/44252639/87869823-c0ee0080-c9dd-11ea-83b5-9c515b6f90db.png" alt="icon.png" style="zoom:55%;" />
@@ -9,17 +9,17 @@
 * 프로젝트 기간 : 2020/07/13~2020/07/19
 * [API Document](https://simju9397.gitbook.io/purpur)
 
-## Architecture
+## :globe_with_meridians: Architecture
 
 ![architecture ](https://user-images.githubusercontent.com/44252639/87870374-6014f700-c9e2-11ea-95f5-c25e701983b2.png)
 
 
 
-## ERD
+## :crystal_ball: ERD
 
 ![PURPUR ERD](https://user-images.githubusercontent.com/44252639/87870465-46c07a80-c9e3-11ea-866d-fdc64669f7ca.png)
 
-## 의존성
+## :bulb: Dependencies
 
 ```json
 "dependencies": {
@@ -39,7 +39,8 @@
   }
 ```
 
-## 시작하기
+
+## :fire: Get Started
 
 모든 소스코드는 vscode+ Windows10 + Node.js 10 환경에서 작성되었습니다.
 
@@ -130,12 +131,12 @@ app.set('port', port);
 
 - `ec2_ip:port`으로 접속이 가능합니다
 
-## 배포
+## :loudspeaker:Published By
 
 - AWS EC2 - 애플리케이션 서버
 - AWS RDS - DB 원격 저장소
 
-## 사용된 도구
+## :wrench:Tools
 
 - [Node.js](https://nodejs.org/ko/)
 - [Sequelize](https://sequelize.org/)
@@ -148,10 +149,10 @@ app.set('port', port);
 - [AWS EC2](https://aws.amazon.com/ko/ec2/?sc_channel=PS&sc_campaign=acquisition_KR&sc_publisher=google&sc_medium=english_ec2_b&sc_content=ec2_e&sc_detail=aws%20ec2&sc_category=ec2&sc_segment=177228231544&sc_matchtype=e&sc_country=KR&s_kwcid=AL!4422!3!177228231544!e!!g!!aws%20ec2&ef_id=WkRozwAAAnO-lPWy:20180412120123:s) 
 - [AWS RDS](https://aws.amazon.com/ko/rds/)
 
-## 개발자
+## :computer: Contributor
 
 - **심정욱** - [junguksim](https://github.com/junguksim) 
 
-## 푸르푸르의 다른 프로젝트
+## :postbox: ​Other Project
 
 - [ANDROID](https://github.com/PurPur-Resque-Team/PurPur-Android)
