@@ -29,6 +29,7 @@ module.exports = {
             let addUser =( await models.users.create({ userName})).dataValues;
             let {userIdx} = addUser;
             let {token} = await jwt.sign(addUser);
+            console.log(`userIdx : ${userIdx}`);
             for(var i = 0 ; i < ISLANDS_COUNT; i++) {
                 let isOpened = i == 0 ? 1 : 0;
                 let addIsland = (await models.islands.create({islandName : ISLANDS_NAME_ARRAY[i], islandProgress : 0, islandStatus : 0,isOpened})).dataValues;
@@ -46,7 +47,7 @@ module.exports = {
                     }
                 }
             }
-            res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.SIGN_UP_SUCCESS, { userName, token }))
+            res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.SIGN_UP_SUCCESS, { userName, token}))
         } catch (exception) {
             console.log(exception);
             return;

@@ -27,7 +27,7 @@ module.exports = {
             res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.GET_ISLANDS_LIST_SUCCESS, islands));
             return;
         }
-        console.log(islandIdx)
+        console.log(`islandIdx : ${islandIdx}`)
         let islandInfo = (await models.islands.findOne({
             where: { islandIdx },
             attributes: [

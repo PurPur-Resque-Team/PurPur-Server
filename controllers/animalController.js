@@ -8,6 +8,14 @@ const PURR_ISLAND_ANIMALS_NAME_ARRAY = ["토리", "고미", "폭시", "두두", 
 
 const moment = require('moment-timezone');
 
+const addIslandProgress = async(isLastProgressEven, islandIdx) => {
+    let addValue = 0;
+    addValue = isLastProgressEven == 0 ? 6 : 5;
+    await models.islands.update({
+        islandProgress: Sequelize.literal(`islandProgress + ${addValue}`),
+        isLastProgressEven: 1
+    }, { where: { islandIdx } })
+}
 
 module.exports = {
     getAnimalInfo: async (req, res) => {
@@ -48,8 +56,6 @@ module.exports = {
                 res.status(statCode.BAD_REQUEST).send(resUtil.successFalse(statCode.BAD_REQUEST, resMsg.NULL_VALUE));
                 throw "NULL VALUE"
             }
-
-
             let missionInfo = await models.missions.findOne({
                 attributes: ["isCleared"],
                 where: { missionIdx }
@@ -65,13 +71,13 @@ module.exports = {
             let { islandProgress, isLastProgressEven, islandStatus } = islandInfo.dataValues;
             let { animalStatus } = animalInfo.dataValues;
             let { isCleared } = missionInfo.dataValues;
-            if (animalStatus == 3 && isCleared == 0) {
-                await models.animals.update({
-                    lastMissionClear: moment().format('YYYY-MM-DD HH:mm:ss'),
-                }, { where: { animalIdx } })
-            }
+            // if (animalStatus == 3 && isCleared == 0) {
+            //     await models.animals.update({
+            //         lastMissionClear: moment().format('YYYY-MM-DD HH:mm:ss'),
+            //     }, { where: { animalIdx } })
+            // }
 
-            if (animalStatus < 3 && islandStatus < 2 && isCleared == 0) {
+            if (animalStatus <= 3 && islandStatus < 2 && isCleared == 0) {
                 await models.animals.update({
                     animalStatus: Sequelize.literal('animalStatus + 1'),
                     animalProgress: Sequelize.literal('animalProgress + 34'),
@@ -81,24 +87,8 @@ module.exports = {
                 await models.missions.update({
                     isCleared: 1
                 }, { where: { missionIdx } })
-                if (isLastProgressEven == 0) {
-                    await models.islands.update({
-                        islandProgress: Sequelize.literal('islandProgress + 6'),
-                        isLastProgressEven: 1
-                    }, { where: { islandIdx } })
-                }
-                else {
-                    await models.islands.update({
-                        islandProgress: Sequelize.literal('islandProgress + 5'),
-                        isLastProgressEven: 0
-                    }, { where: { islandIdx } })
-                }
-                if (islandProgress == 28) {
-                    await models.islands.update({
-                        islandStatus: Sequelize.literal('islandStatus + 1')
-                    }, { where: { islandIdx } })
-                }
-                if (islandProgress == 61) {
+                addIslandProgress(isLastProgressEven, islandIdx);
+                if (islandProgress == 28 || islandProgress == 61) {
                     await models.islands.update({
                         islandStatus: Sequelize.literal('islandStatus + 1')
                     }, { where: { islandIdx } })
