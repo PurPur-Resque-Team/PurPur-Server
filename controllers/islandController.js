@@ -12,7 +12,7 @@ module.exports = {
             let userIdx = req.decoded.idx;
             let getIslands = (await models.islands.findAll({
                 attributes: [
-                    "islandIdx", "islandName", "islandProgress", "isOpened"
+                    "islandIdx", "islandName", "islandProgress", "isOpened", "islandStatus"
                 ],
                 include: {
                     model: models.users,
@@ -31,13 +31,18 @@ module.exports = {
         let islandInfo = (await models.islands.findOne({
             where: { islandIdx },
             attributes: [
-                "islandIdx", "islandName", "islandProgress", "isOpened"
+                "islandIdx", "islandName", "islandProgress", "isOpened", "islandStatus"
             ],
             include: {
                 model: models.animals,
                 through : {attributes : []}
             }
         }));
+        
+        islandInfo.animals = islandInfo.animals.map((curr,index)=>{
+            curr.dataValues["animalVerify"]= index;
+            return curr;
+        })
         res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.GET_ISLAND_SUCCESS, islandInfo));
     },
 

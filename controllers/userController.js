@@ -31,7 +31,7 @@ module.exports = {
             let {token} = await jwt.sign(addUser);
             for(var i = 0 ; i < ISLANDS_COUNT; i++) {
                 let isOpened = i == 0 ? 1 : 0;
-                let addIsland = (await models.islands.create({islandName : ISLANDS_NAME_ARRAY[i], islandProgress : 0, isOpened})).dataValues;
+                let addIsland = (await models.islands.create({islandName : ISLANDS_NAME_ARRAY[i], islandProgress : 0, islandStatus : 0,isOpened})).dataValues;
                 let {islandIdx} = addIsland;
                 await models.users_islands.create({fk_userIdx : userIdx, fk_islandIdx : islandIdx});
                 if(i == 0) {
@@ -49,6 +49,21 @@ module.exports = {
             res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.SIGN_UP_SUCCESS, { userName, token }))
         } catch (exception) {
             console.log(exception);
+            return;
+        }
+    },
+    setUserName: async (req, res) => {
+        const userIdx = req.decoded.idx;
+        const { userName } = req.body;
+        try {
+            if (!userName) {
+                res.status(statCode.BAD_REQUEST).send(resUtil.successFalse(statCode.BAD_REQUEST, resMsg.NULL_VALUE));
+                throw "NULL VALUE"
+            }
+            await models.users.update({ userName }, { where: { userIdx } })
+            res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.SET_NAME_SUCCESS, { userIdx }));
+        } catch (exception) {
+            console.log('exception : ' + exception);
             return;
         }
     },

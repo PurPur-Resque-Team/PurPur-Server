@@ -4,6 +4,7 @@ const statCode = require('../module/statusCode');
 const jwt = require('../module/jwt');
 const models = require('../models');
 const Sequelize = require('sequelize');
+const PURR_ISLAND_ANIMALS_NAME_ARRAY = ["토리", "고미", "폭시", "두두", "더기", "푸푸리"];
 
 const moment = require('moment-timezone');
 
@@ -16,9 +17,11 @@ module.exports = {
                 res.status(statCode.BAD_REQUEST).send(resUtil.successFalse(statCode.BAD_REQUEST, resMsg.NULL_VALUE));
                 throw "NULL VALUE"
             }
-            let animalInfo = await models.animals.findOne({
+            let animalInfo = (await models.animals.findOne({
                 where: { animalIdx }
-            })
+            })).dataValues
+            let animalVerify = PURR_ISLAND_ANIMALS_NAME_ARRAY.indexOf(animalInfo.animalName);
+            animalInfo.animalVerify = animalVerify;
             let missions = await models.missions.findAll({ where: { fk_animalIdx: animalIdx } });
             missions = missions.map((curr) => {
                 return curr.dataValues;
@@ -37,6 +40,10 @@ module.exports = {
         try {
             let { animalIdx } = req.query;
             let { missionIdx } = req.body;
+            console.log(animalIdx)
+            let islandIdx = (await models.islands_animals.findOne({
+                where : {fk_animalIdx : animalIdx}
+            })).dataValues.fk_islandIdx;
             if (!animalIdx || !missionIdx) {
                 res.status(statCode.BAD_REQUEST).send(resUtil.successFalse(statCode.BAD_REQUEST, resMsg.NULL_VALUE));
                 throw "NULL VALUE"
@@ -47,16 +54,39 @@ module.exports = {
                 lastMissionClear: moment().format('YYYY-MM-DD HH:mm:ss'),
 
             }, { where: { animalIdx } })
+            
             let updateMissionStatus = await models.missions.update({
                 isCleared: 1
             }, { where: { missionIdx } })
             let afterAnimalInfo = await models.animals.findOne({
-                attributes: ["animalStatus", "animalProgress"]
+                attributes: ["animalName","animalStatus", "animalProgress"],
+                where : {animalIdx}
             })
+            let afterIslandInfo = await models.islands.findOne({
+                attributes : ["islandName","islandProgress"],
+                where : {islandIdx}
+            })
+            let {islandProgress} = afterIslandInfo.dataValues;
+            let {animalStatus} = afterAnimalInfo.dataValues;
+            if(animalStatus < 3) {
+                let updateIslandProgress = await models.islands.update({
+                    islandProgress: Sequelize.literal('islandProgress + 5.6')
+                }, {where : {islandIdx}})
+                if(islandProgress == 33.6) {
+                    await models.islands.update({
+                        islandStatus: Sequelize.literal('islandStatus + 1')
+                    }, {where : {islandIdx}})
+                }
+                if(islandProgress == 67.2) {
+                    await models.islands.update({
+                        islandStatus: Sequelize.literal('islandStatus + 1')
+                    }, {where : {islandIdx}})
+                }
+            }
             res.status(statCode.OK).send(resUtil.successTrue(statCode.OK, resMsg.CLEAR_MISSION_SUCCESS, {
                 clearedMissionIdx: missionIdx,
-                afterAnimalInfo
-
+                afterAnimalInfo,
+                afterIslandInfo
             }));
         } catch (e) {
             console.log(e);
